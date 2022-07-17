@@ -71,6 +71,8 @@ keys = [
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
+    Key([mod], "f", lazy.spawn("firefox"), desc="Launch Firefox"),
+    Key([mod, "shift"], "n", lazy.restart(), desc="Restart a Qtile session"),
 ]
 
 groups = [Group(i) for i in "123456789"]
@@ -105,7 +107,7 @@ layouts = [
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
     # layout.Bsp(),
-    # layout.Matrix(),
+    layout.Matrix(),
     # layout.MonadTall(),
     # layout.MonadWide(),
     # layout.RatioTile(),
