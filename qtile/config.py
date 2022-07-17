@@ -24,10 +24,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import subprocess
 from libqtile import bar, layout, widget
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
+
+subprocess.run(["/home/quito/bin/start-qtile"]) #Calls the initialization script with nitrogen, picom ...
 
 mod = "mod4"
 terminal = guess_terminal()
