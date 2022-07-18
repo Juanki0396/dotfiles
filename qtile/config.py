@@ -30,7 +30,7 @@ from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal 
 
-subprocess.run(["/home/quito/bin/start-qtile"]) #Calls the initialization script with nitrogen, picom ...
+subprocess.run(["/home/quito/bin/autostart.sh"]) #Calls the initialization script with nitrogen, picom ...
 
 mod = "mod4"
 terminal = guess_terminal()
