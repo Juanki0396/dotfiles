@@ -28,7 +28,7 @@ import subprocess
 from libqtile import bar, layout, widget
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
-from libqtile.utils import guess_terminal
+from libqtile.utils import guess_terminal 
 
 subprocess.run(["/home/quito/bin/start-qtile"]) #Calls the initialization script with nitrogen, picom ...
 
@@ -36,6 +36,16 @@ mod = "mod4"
 terminal = guess_terminal()
 
 keys = [
+    #Spawn programs
+    Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
+    Key([mod], "f", lazy.spawn("firefox"), desc="Launch Firefox"),
+    Key([mod], "d", lazy.spawn("pcmanfm"), desc="Launch PCmanFM (file manager)"),
+    Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
+    # Close apps and qlite
+    Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
+    Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
+    Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
+
     # A list of available commands that can be bound to keys can be found
     # at https://docs.qtile.org/en/latest/manual/config/lazy.html
     # Switch between windows
@@ -67,35 +77,34 @@ keys = [
         lazy.layout.toggle_split(),
         desc="Toggle between split and unsplit sides of stack",
     ),
-    Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
     # Toggle between different layouts as defined below
-    Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
-    Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
-    Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
-    Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
-    Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
-    Key([mod], "f", lazy.spawn("firefox"), desc="Launch Firefox"),
-    Key([mod, "shift"], "n", lazy.restart(), desc="Restart a Qtile session"),
+    Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts")
 ]
 
-groups = [Group(i) for i in "123456789"]
+groups = [
+    Group(name="INT", spawn="firefox", init=True),
+    Group(name="TERM", spawn=terminal, init=True),
+    Group(name="DEV"),
+    Group(name="FILES"),
+    Group(name="MISC")
+]
 
-for i in groups:
+for i, group in enumerate(groups):
     keys.extend(
         [
             # mod1 + letter of group = switch to group
             Key(
                 [mod],
-                i.name,
-                lazy.group[i.name].toscreen(),
-                desc="Switch to group {}".format(i.name),
+                i,
+                lazy.group[group.name].toscreen(),
+                desc="Switch to group {}".format(group.name),
             ),
             # mod1 + shift + letter of group = switch to & move focused window to group
             Key(
                 [mod, "shift"],
-                i.name,
-                lazy.window.togroup(i.name, switch_group=True),
-                desc="Switch to & move focused window to group {}".format(i.name),
+                i,
+                lazy.window.togroup(group.name, switch_group=True),
+                desc="Switch to & move focused window to group {}".format(group.name),
             ),
             # Or, use below if you prefer not to switch to that group.
             # # mod1 + shift + letter of group = move focused window to group
